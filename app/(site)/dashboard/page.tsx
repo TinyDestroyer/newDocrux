@@ -96,10 +96,6 @@ const Page = (props: Props) => {
   };
 
   const queryHandler = async () => {
-    alert("shubh");
-    const log = (...args : any) => console.log(JSON.stringify(args));
-    log("shubh");
-    console.log("hello from here");
     try {
       setLoading(true);
       setQuery("");
@@ -113,7 +109,7 @@ const Page = (props: Props) => {
       });
       if (!response.ok) {
         setLoading(false);
-        setChats((prev) => [...prev, {name: "system", chat: "An error occurred"}]);
+        setChats((prev) => [...prev, {name: "system", chat: "An error from client occurred"}]);
         return;
       }
       const result = await response.json();

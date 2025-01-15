@@ -15,18 +15,18 @@ const index = pinecone.index('docrux');
 
 export async function GET(req: Request){
     try {
-        console.log("checkpoint-1");
-        const { searchParams } = new URL(req.url);
-        const user = searchParams.get("user");
-        const query = searchParams.get("query");
+        // console.log("checkpoint-1");
+        // const { searchParams } = new URL(req.url);
+        // const user = searchParams.get("user");
+        // const query = searchParams.get("query");
 
-        // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
-        if(!query){
-            return new Response(JSON.stringify({ error: "No Query Provided" }), {
-                status: 400,
-            });
-        }
-        console.log("checkpoint-2");
+        // // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
+        // if(!query){
+        //     return new Response(JSON.stringify({ error: "No Query Provided" }), {
+        //         status: 400,
+        //     });
+        // }
+        // console.log("checkpoint-2");
 
         // const embed_query = await hf.featureExtraction({
         //     model: 'sentence-transformers/all-MiniLM-L6-v2',
@@ -48,27 +48,27 @@ export async function GET(req: Request){
         //     // If it's a single number (shouldn't happen with this model)
         //     queryEmbedding = [embed_query as number];
         // }
-        // const embeddings = await embedder(query);
+        // // const embeddings = await embedder(query);
 
-    //     // const newArray = embeddings.tolist();
-    //     // const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
-    //     //     acc.map((value, index) => value + row[index] / newArray[0].length), 
-    //     //     new Array(384).fill(0)
-    //     // );
+        // // const newArray = embeddings.tolist();
+        // // const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
+        // //     acc.map((value, index) => value + row[index] / newArray[0].length), 
+        // //     new Array(384).fill(0)
+        // // );
 
         // console.log("checkpoint-3 ", embed_query);
-    //     const response = await index.query({
-    //         topK: 2,
-    //         vector: queryEmbedding,
-    //         includeValues: true,
-    //         includeMetadata: true,
-    //         filter: { user }
-    //     });
+        // const response = await index.query({
+        //     topK: 2,
+        //     vector: queryEmbedding,
+        //     includeValues: true,
+        //     includeMetadata: true,
+        //     filter: { user }
+        // });
 
-        let text = "";
-    //     for(let i = 0; i < response.matches.length; i++){
-    //         text += response.matches[i]?.metadata?.text;
-    //     }
+        // let text = "";
+        // for(let i = 0; i < response.matches.length; i++){
+        //     text += response.matches[i]?.metadata?.text;
+        // }
 
         // console.log("checkpoint-4");
         // const promt = text + " " + query;
@@ -84,7 +84,7 @@ export async function GET(req: Request){
         // });
         // console.log("checkpoint-5");
 
-    //     return NextResponse.json(data.choices[0].message.content);
+        // return NextResponse.json(data.choices[0].message.content);
         return NextResponse.json("Ma yahan aaya hu!!!");
     } catch (error) {
         return NextResponse.json("error occured!");

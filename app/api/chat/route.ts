@@ -13,15 +13,11 @@ const pinecone = new Pinecone({
 });
 const index = pinecone.index('docrux');
 
-export async function GET(req: NextRequest,
-    { params }: { params: { user: string; query: string } }){
+export async function GET(req: NextRequest){
     try {
         console.log("checkpoint-1");
-        const { user, query } = params;
         
         // Decode the parameters since they'll be URL-encoded
-        const decodedQuery = decodeURIComponent(query);
-        const decodedUser = decodeURIComponent(user);
         // const user = searchParams.get("user");
         // const query = searchParams.get("query");
         // console.log(user, " ", query);

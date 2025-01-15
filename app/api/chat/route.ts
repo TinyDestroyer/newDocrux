@@ -17,7 +17,6 @@ export async function GET(req: NextRequest){
     try {
         console.log("checkpoint-1");
         const searchParams = req.nextUrl.searchParams;
-
         const user = searchParams.get("user");
         const query = searchParams.get("query");
         console.log(user, " ", query);

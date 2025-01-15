@@ -70,19 +70,19 @@ export async function GET(req: Request){
     //         text += response.matches[i]?.metadata?.text;
     //     }
 
-        console.log("checkpoint-4");
-        const promt = text + " " + query;
-        const data = await groq.chat.completions.create({
-            messages: [
-              {
-                role: "user",
-                content: promt,
-              },
-            ],
-            model: "llama-3.3-70b-versatile",
-            max_tokens: 300,
-        });
-        console.log("checkpoint-5");
+        // console.log("checkpoint-4");
+        // const promt = text + " " + query;
+        // const data = await groq.chat.completions.create({
+        //     messages: [
+        //       {
+        //         role: "user",
+        //         content: promt,
+        //       },
+        //     ],
+        //     model: "llama-3.3-70b-versatile",
+        //     max_tokens: 300,
+        // });
+        // console.log("checkpoint-5");
 
     //     return NextResponse.json(data.choices[0].message.content);
         return NextResponse.json("Ma yahan aaya hu!!!");

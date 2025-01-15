@@ -101,7 +101,9 @@ const Page = (props: Props) => {
       setQuery("");
       setChats((prev) => [...prev, {name: "user", chat: query}]);
       console.log("hello from point 2");
-      const response = await fetch(`/api/chat?user=${encodeURIComponent(user?.name || 'guest')}&query=${encodeURIComponent(query)}`, {
+      const encodedUser = encodeURIComponent(user?.name || 'guest');
+      const encodedQuery = encodeURIComponent(query);
+      const response = await fetch(`/api/chat?user=${encodedUser}/${encodedQuery}`, {
         method: "GET",
         headers: {
           'Accept': 'application/json'

@@ -15,40 +15,40 @@ const index = pinecone.index('docrux');
 
 export async function GET(req: Request){
     try {
-    //     console.log("checkpoint-1");
-    //     const { searchParams } = new URL(req.url);
-    //     const user = searchParams.get("user");
-    //     const query = searchParams.get("query");
+        console.log("checkpoint-1");
+        const { searchParams } = new URL(req.url);
+        const user = searchParams.get("user");
+        const query = searchParams.get("query");
 
-    //     // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
-    //     if(!query){
-    //         return new Response(JSON.stringify({ error: "No Query Provided" }), {
-    //             status: 400,
-    //         });
-    //     }
-    //     console.log("checkpoint-2");
+        // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
+        if(!query){
+            return new Response(JSON.stringify({ error: "No Query Provided" }), {
+                status: 400,
+            });
+        }
+        console.log("checkpoint-2");
 
-    //     const embed_query = await hf.featureExtraction({
-    //         model: 'sentence-transformers/all-MiniLM-L6-v2',
-    //         inputs: query,
-    //     }).catch((error) => {
-    //         console.error("Error during Hugging Face feature extraction:", error);
-    //         throw error;
-    //     });
+        const embed_query = await hf.featureExtraction({
+            model: 'sentence-transformers/all-MiniLM-L6-v2',
+            inputs: query,
+        }).catch((error) => {
+            console.error("Error during Hugging Face feature extraction:", error);
+            throw error;
+        });
 
-    //     let queryEmbedding: number[];
+        let queryEmbedding: number[];
 
-    //     if (Array.isArray(embed_query) && Array.isArray(embed_query[0])) {
-    //         // If it's a nested array, take the first array
-    //         queryEmbedding = embed_query[0] as number[];
-    //     } else if (Array.isArray(embed_query)) {
-    //         // If it's already a flat array
-    //         queryEmbedding = embed_query as number[];
-    //     } else {
-    //         // If it's a single number (shouldn't happen with this model)
-    //         queryEmbedding = [embed_query as number];
-    //     }
-    //     // const embeddings = await embedder(query);
+        if (Array.isArray(embed_query) && Array.isArray(embed_query[0])) {
+            // If it's a nested array, take the first array
+            queryEmbedding = embed_query[0] as number[];
+        } else if (Array.isArray(embed_query)) {
+            // If it's already a flat array
+            queryEmbedding = embed_query as number[];
+        } else {
+            // If it's a single number (shouldn't happen with this model)
+            queryEmbedding = [embed_query as number];
+        }
+        // const embeddings = await embedder(query);
 
     //     // const newArray = embeddings.tolist();
     //     // const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
@@ -56,7 +56,7 @@ export async function GET(req: Request){
     //     //     new Array(384).fill(0)
     //     // );
 
-    //     console.log("checkpoint-3");
+        console.log("checkpoint-3 ", embed_query);
     //     const response = await index.query({
     //         topK: 2,
     //         vector: queryEmbedding,

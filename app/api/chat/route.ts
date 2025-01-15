@@ -17,9 +17,9 @@ export async function GET(req: NextRequest){
     try {
         console.log("checkpoint-1");
         const searchParams = req.nextUrl.searchParams;
-        const user = searchParams.get("user");
-        const query = searchParams.get("query");
-        console.log(user, " ", query);
+        // const user = searchParams.get("user");
+        // const query = searchParams.get("query");
+        // console.log(user, " ", query);
         // const { searchParams } = new URL(req.url);
         // console.log(searchParams);
         // const user = searchParams.get("user");
@@ -89,7 +89,7 @@ export async function GET(req: NextRequest){
         });
         console.log("checkpoint-5");
 
-        return NextResponse.json(query);
+        return NextResponse.json(data.choices[0].message.content);
         // return NextResponse.json("Ma yahan aaya hu!!!");
     } catch (error) {
         return NextResponse.json("error occured!");

@@ -16,8 +16,8 @@ const index = pinecone.index('docrux');
 export async function GET(req: Request){
     try {
         console.log("checkpoint-1");
-        const { searchParams } = new URL(req.url);
-        console.log(searchParams);
+        // const { searchParams } = new URL(req.url);
+        // console.log(searchParams);
         // const user = searchParams.get("user");
         // const query = searchParams.get("query");
 

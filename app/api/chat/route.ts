@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Pinecone } from '@pinecone-database/pinecone';
 // import { pipeline } from "@huggingface/transformers";
 import { HfInference } from '@huggingface/inference';
@@ -13,9 +13,14 @@ const pinecone = new Pinecone({
 });
 const index = pinecone.index('docrux');
 
-export async function GET(req: Request){
+export async function GET(req: NextRequest){
     try {
         console.log("checkpoint-1");
+        const searchParams = req.nextUrl.searchParams;
+
+        const user = searchParams.get("user");
+        const query = searchParams.get("query");
+        console.log(user, " ", query);
         // const { searchParams } = new URL(req.url);
         // console.log(searchParams);
         // const user = searchParams.get("user");
@@ -85,7 +90,7 @@ export async function GET(req: Request){
         });
         console.log("checkpoint-5");
 
-        return NextResponse.json(data.choices[0].message.content);
+        return NextResponse.json(query);
         // return NextResponse.json("Ma yahan aaya hu!!!");
     } catch (error) {
         return NextResponse.json("error occured!");

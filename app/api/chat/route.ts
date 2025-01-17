@@ -13,7 +13,7 @@ const pinecone = new Pinecone({
 });
 const index = pinecone.index('docrux');
 
-export async function GET(req: NextRequest){
+export async function GET(req:Request){
     try {
         console.log("checkpoint-1");
         

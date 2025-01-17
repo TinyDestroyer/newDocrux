@@ -5,7 +5,7 @@ import React from "react";
 const page = () => {
   const test = async () => {
     console.log("clicked");
-    const res = await fetch(`/api/test?query=${"yaha hu mai"}`);
+    const res = await fetch(`/api/test?query=${"ismai kaise chal rha hai??"}`);
     const data = await res.json();
     console.log(data);
   }

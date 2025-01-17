@@ -21,10 +21,10 @@ export async function GET(req: NextRequest){
         // const user = searchParams.get("user");
         // const query = searchParams.get("query");
         // console.log(user, " ", query);
-        // const { searchParams } = new URL(req.url);
-        // console.log(searchParams);
-        // const user = searchParams.get("user");
-        // const query = searchParams.get("query");
+        const { searchParams } = new URL(req.url);
+        console.log(searchParams);
+        const user = searchParams.get("user");
+        const query = searchParams.get("query");
 
         // // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
         // if(!query){
@@ -77,12 +77,13 @@ export async function GET(req: NextRequest){
         // }
 
         // console.log("checkpoint-4");
-        // const promt = text + " " + query;
+        const text = "";
+        const promt = text + " " + query;
         const data = await groq.chat.completions.create({
             messages: [
               {
                 role: "user",
-                content: "India",
+                content: promt,
               },
             ],
             model: "llama-3.3-70b-versatile",

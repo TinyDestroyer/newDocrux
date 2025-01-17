@@ -90,8 +90,8 @@ export async function GET(req: NextRequest){
         });
         console.log("checkpoint-5");
 
-        // return NextResponse.json(data.choices[0].message.content);
-        return NextResponse.json("india");
+        return NextResponse.json(data.choices[0].message.content);
+        // return NextResponse.json("india");
     } catch (error) {
         return NextResponse.json("error occured!");
     }

@@ -15,7 +15,7 @@ import {
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import ReactMarkdown from 'react-markdown';
-// import { createWorker } from 'tesseract.js';
+import { createWorker } from 'tesseract.js';
 
 
 
@@ -62,35 +62,32 @@ const Page = (props: Props) => {
         result = await response.json();
       }
       const imgs = result.images;
-      console.log("images uploaded");
 
-      // const worker = await createWorker();
-      // let imgText = []
-      // if(imgs){
-      //   for(let i = 0; i < imgs.length; i++){
-      //     // Decode Base64 to binary
-      //     const binaryString = atob(imgs[i].data);
-      //     const binaryLength = binaryString.length;
-      //     const binaryArray = new Uint8Array(binaryLength);
+      const worker = await createWorker();
+      let imgText = []
+      if(imgs){
+        for(let i = 0; i < imgs.length; i++){
+          // Decode Base64 to binary
+          const binaryString = atob(imgs[i].data);
+          const binaryLength = binaryString.length;
+          const binaryArray = new Uint8Array(binaryLength);
   
-      //     for (let i = 0; i < binaryLength; i++) {
-      //       binaryArray[i] = binaryString.charCodeAt(i);
-      //     }
-  
-      //     // Create a Blob
-      //     const blob = new Blob([binaryArray], { type: 'image/png' }); 
-      //     const ret = await worker.recognize(blob);
-      //     imgText.push(ret.data.text)
-      //   }
-      // }
+          for (let i = 0; i < binaryLength; i++) {
+            binaryArray[i] = binaryString.charCodeAt(i);
+          }
+          // Create a Blob
+          const blob = new Blob([binaryArray], { type: 'image/png' }); 
+          const ret = await worker.recognize(blob);
+          imgText.push(ret.data.text)
+        }
+      }
 
-      // formData.append("imgText", JSON.stringify(imgText));
-      // const imgTextUpload = await fetch("/api/imageUpload", {
-      //   method : "POST",
-      //   body: formData,
-      // })
-
-      // await worker.terminate();
+      formData.append("imgText", JSON.stringify(imgText));
+      await fetch("/api/imageUpload", {
+        method : "POST",
+        body: formData,
+      })
+      await worker.terminate();
     } else {
       console.log("No file uploaded");
     }
@@ -101,27 +98,27 @@ const Page = (props: Props) => {
       setLoading(true);
       setQuery("");
       setChats((prev) => [...prev, {name: "user", chat: query}]);
-      console.log("hello from point 2");
-      const response = await fetch(`/api/chat?user=${user}&query=${query}`, {
+
+      const response = await fetch(`/api/chat?user=${user?.name}&query=${query}`, {
         method: "GET",
         headers: {
           'Accept': 'application/json'
         }
       });
+
       if (!response.ok) {
         setLoading(false);
         setChats((prev) => [...prev, {name: "system", chat: "An error from client occurred"}]);
         return;
       }
+
       const result = await response.json();
-      setLoading(false);
       setChats((prev) => [...prev, {name:"system", chat: result}]);
     } catch (error) {
       setChats((prev) => [...prev, {name: "system", chat: "An error occurred"}]);
     }finally{
       setLoading(false);
     }
-    console.log("hello from point 3");
   }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -132,7 +129,6 @@ const Page = (props: Props) => {
 
   useEffect(() => {
     // Automatically scroll to the target div when the page loads
-    console.log("shubh");
     const targetDiv = document.getElementById('targetDiv');
     targetDiv?.scrollIntoView({
       behavior: 'smooth', // Smooth scrolling

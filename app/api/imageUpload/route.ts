@@ -9,13 +9,6 @@ const index = pinecone.index('docrux');
 
 const hf = new HfInference(process.env.HF_TOKEN);
 
-// export const config = {
-//     runtime: 'edge',
-//     api: {
-//       bodyParser: false, // Disable Next.js default body parser for FormData
-//     },
-// };
-
 export const runtime = 'nodejs';
 
 export async function POST(req: Request){
@@ -48,33 +41,7 @@ export async function POST(req: Request){
                 inputs: sentences,
             })
 
-            // for(let i = 0; i < sentences.length; i++){
-            //     const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
-            //     const embeddings = await embedder(sentences[i]);
-        
-            //     const newArray = embeddings.tolist();
-            //     const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
-            //         acc.map((value, index) => value + row[index] / newArray[0].length), 
-            //         new Array(384).fill(0)
-            //     );
-            //     const newData = {
-            //         id: `sentence-${Date.now()}-${i}`,
-            //         values: pooledEmbedding,
-            //         metadata:{
-            //             text: sentences[i],
-            //             user
-            //     }
-            // };
-                // data.push(newData);
-            // }
             for(let i = 0; i < embeddings.length; i++){
-                //   const embeddings = await embedder(sentences[i]);
-        
-                //   const newArray = embeddings.tolist();
-                //   const pooledEmbedding = newArray[0].reduce((acc: number[], row: number[]) => 
-                //     acc.map((value, index) => value + row[index] / newArray[0].length), 
-                //     new Array(384).fill(0)
-                //   );
                 const newData = {
                     id: `sentence-${Date.now()}-${i}`,
                     values: embeddings[i],

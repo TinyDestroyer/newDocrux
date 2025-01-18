@@ -21,7 +21,7 @@ export async function GET(req:Request){
         // const user = searchParams.get("user");
         // const query = searchParams.get("query");
         // console.log(user, " ", query);
-        console.log(req.url);
+        // console.log(req.url);
         // const { searchParams } = new URL(req.url);
         // console.log(searchParams);
         // const user = searchParams.get("user");

@@ -45,7 +45,7 @@ export async function GET(req : Request){
             includeMetadata: true,
             filter: { user }
         });
-        console.log(response.matches[0].metadata?.text);
+        console.log("This is response--> ",response?.matches[0].metadata?.text);
         let text = "";
         for(let i = 0; i < response.matches.length; i++){
             text += response.matches[i]?.metadata?.text;

@@ -25,6 +25,7 @@ export async function GET(req:Request){
         console.log(searchParams);
         const user = searchParams.get("user");
         const query = searchParams.get("query");
+        // const query = "shubh";
 
         // // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
         // if(!query){
@@ -94,6 +95,6 @@ export async function GET(req:Request){
         return NextResponse.json(query);
         // return NextResponse.json("india");
     } catch (error) {
-        return NextResponse.json("error occured!");
+        return NextResponse.json(error);
     }
 }

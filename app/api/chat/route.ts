@@ -95,7 +95,7 @@ export async function GET(req:Request){
         return NextResponse.json(query);
         // return NextResponse.json("india");
     } catch (error) {
-        console.log(error);
+        console.log("This is the error --> ",error);
         return NextResponse.json("error occured!!");
     }
 }

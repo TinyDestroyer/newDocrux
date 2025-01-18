@@ -156,7 +156,7 @@ const Page = (props: Props) => {
             />
           </div> : <div className="max-h-full overflow-y-scroll p-2">{pdfText}</div>}
         </div> */}
-        <div className="flex flex-col justify-center itmes-center w-full">
+        <div className="flex flex-col justify-center itmes-center h-full w-full">
           <h1 className="m-4 font-sans text-center flex-1">
             Good to see you, <span className="font-bold">{user?.name}!</span>{" "}
             What can we discover in your PDF today?
@@ -184,6 +184,7 @@ const Page = (props: Props) => {
               </p>
             </div>
           </div> : 
+          <div className="max-h-full overflow-y-auto scrollbar-thin scrollbar-track-rounded-lg scrollbar-thumb-rounded-lg scrollbar-thumb-gray-400 scrollbar-track-gray-700">
           <div className="flex flex-col justify-end mx-auto mt-auto m-2 w-3/5 text-gray-700">
             {chats.map((chat,index) => (
               <div key={index} className={`flex mb-2 gap-3 ${chat.name !== "system" && "justify-end"}`}>
@@ -224,6 +225,7 @@ const Page = (props: Props) => {
                 </div>
               </div>
             }
+          </div>
           </div>
           }
           

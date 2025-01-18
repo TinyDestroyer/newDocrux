@@ -80,3 +80,32 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px; /* For horizontal scrollbar */
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px; /* Round the thumb */
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* Round the track */
+  }
+
+  /* Optional: Handle hover state for the scrollbar */
+  .scrollbar-thin:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    border-radius: 12px; /* Apply the rounded corners to the track */
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    border-radius: 12px; /* Apply the rounded corners to the thumb */
+  }
+}

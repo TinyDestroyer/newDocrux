@@ -1,17 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Pinecone } from '@pinecone-database/pinecone';
-// import { pipeline } from "@huggingface/transformers";
-import { HfInference } from '@huggingface/inference';
-import Groq from "groq-sdk";
+import { NextResponse } from "next/server";
+// import { Pinecone } from '@pinecone-database/pinecone';
+// // import { pipeline } from "@huggingface/transformers";
+// import { HfInference } from '@huggingface/inference';
+// import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-const hf = new HfInference(process.env.HF_TOKEN);
+// const hf = new HfInference(process.env.HF_TOKEN);
 
-const pinecone = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY!
-});
-const index = pinecone.index('docrux');
+// const pinecone = new Pinecone({
+//   apiKey: process.env.PINECONE_API_KEY!
+// });
+// const index = pinecone.index('docrux');
 
 export async function GET(req:Request){
     try {
@@ -77,21 +77,21 @@ export async function GET(req:Request){
         // }
 
         // console.log("checkpoint-4");
-        const text = "";
-        const promt = text + " " + query;
-        const data = await groq.chat.completions.create({
-            messages: [
-              {
-                role: "user",
-                content: promt,
-              },
-            ],
-            model: "llama-3.3-70b-versatile",
-            max_tokens: 300,
-        });
-        console.log("checkpoint-5");
+        // const text = "";
+        // const promt = text + " " + query;
+        // const data = await groq.chat.completions.create({
+        //     messages: [
+        //       {
+        //         role: "user",
+        //         content: promt,
+        //       },
+        //     ],
+        //     model: "llama-3.3-70b-versatile",
+        //     max_tokens: 300,
+        // });
+        // console.log("checkpoint-5");
 
-        return NextResponse.json(data.choices[0].message.content);
+        return NextResponse.json(query);
         // return NextResponse.json("india");
     } catch (error) {
         return NextResponse.json("error occured!");

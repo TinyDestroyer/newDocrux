@@ -13,7 +13,6 @@ const pinecone = new Pinecone({
 const index = pinecone.index('docrux');
 
 export async function GET(req : Request){
-    try {
         const { searchParams } = new URL(req.url);
         const query = searchParams.get("query") || "";
         const user = searchParams.get("user");
@@ -63,7 +62,4 @@ export async function GET(req : Request){
                 max_tokens: 300,
             });
         return NextResponse.json(data.choices[0].message.content);
-    } catch (error) {
-        return NextResponse.json("error occured!!");
-    }
 }

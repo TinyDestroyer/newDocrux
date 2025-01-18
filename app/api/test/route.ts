@@ -14,7 +14,6 @@ const index = pinecone.index('docrux');
 
 export async function GET(req : Request){
     const { searchParams } = new URL(req.url);
-    console.log("shubh");
     const query = searchParams.get("query") || "";
     const user = searchParams.get("user");
 
@@ -46,6 +45,7 @@ export async function GET(req : Request){
             includeMetadata: true,
             filter: { user }
         });
+        console.log(response.matches[0].metadata?.text);
         let text = "";
         for(let i = 0; i < response.matches.length; i++){
             text += response.matches[i]?.metadata?.text;

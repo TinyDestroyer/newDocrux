@@ -62,6 +62,7 @@ const Page = (props: Props) => {
         result = await response.json();
       }
       const imgs = result.images;
+      console.log("images uploaded");
 
       // const worker = await createWorker();
       // let imgText = []

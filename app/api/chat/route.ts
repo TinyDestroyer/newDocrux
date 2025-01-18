@@ -21,10 +21,11 @@ export async function GET(req:Request){
         // const user = searchParams.get("user");
         // const query = searchParams.get("query");
         // console.log(user, " ", query);
-        const { searchParams } = new URL(req.url);
-        console.log(searchParams);
-        const user = searchParams.get("user");
-        const query = searchParams.get("query");
+        console.log(req.url);
+        // const { searchParams } = new URL(req.url);
+        // console.log(searchParams);
+        // const user = searchParams.get("user");
+        // const query = searchParams.get("query");
         // const query = "shubh";
 
         // // const embedder = await pipeline("feature-extraction", "sentence-transformers/all-MiniLM-L6-v2");
@@ -92,7 +93,7 @@ export async function GET(req:Request){
         // });
         // console.log("checkpoint-5");
 
-        return NextResponse.json(query);
+        return NextResponse.json("shubh");
         // return NextResponse.json("india");
     } catch (error) {
         console.log("This is the error --> ",error);

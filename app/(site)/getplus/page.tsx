@@ -3,12 +3,6 @@ import Link from "next/link";
 import React from "react";
 
 const page = () => {
-  const test = async () => {
-    console.log("clicked");
-    const res = await fetch(`/api/test?query=${"ismai kaise chal rha hai??"}`);
-    const data = await res.json();
-    console.log(data);
-  }
   return (
     <div className="w-screen flex justify-center items-center font-bold text-xl text-white gap-5">
       <div className="h-4/5 w-1/5 flex flex-col items-center text-black bg-white rounded-lg p-5 hover:border hover:border-2 hover:border-blue-500 hover:scale-110 transition ease-in-out duration-500 cursor-pointer">
@@ -46,7 +40,7 @@ const page = () => {
         <p className="text-xl font-bold text-gray-800 mt-auto">
           $19<span className="text-lg text-gray-600">/mo</span>
         </p>
-        <button className="bg-blue-500 text-white px-6 py-2 rounded-full shadow hover:bg-blue-600 transition mt-auto" onClick={test}>
+        <button className="bg-blue-500 text-white px-6 py-2 rounded-full shadow hover:bg-blue-600 transition mt-auto">
           Upgrade
         </button>
       </div>

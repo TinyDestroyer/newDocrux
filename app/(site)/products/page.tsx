@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 type Props = {};
 
-const page = (props: Props) => {
+const Docs = (props: Props) => {
   const cloudinaryUrl = "https://res.cloudinary.com/docrux/raw/upload/v1737292407/vnyexwbfnotxxfzdkm40";
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -35,4 +35,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Docs;

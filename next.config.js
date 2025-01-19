@@ -13,7 +13,6 @@ const nextConfig = {
       if (isServer) {
         config.externals.push('onnxruntime-node');
       }
-  
       // Add a rule for handling .node files using node-loader
       config.module.rules.push({
         test: /\.node$/,

@@ -16,6 +16,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import ReactMarkdown from 'react-markdown';
 import { createWorker } from 'tesseract.js';
+import { Loader2 } from "lucide-react";
 
 
 
@@ -38,12 +39,14 @@ const Page = (props: Props) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const [query, setQuery] = useState("");
   const [loading,setLoading] = useState(false);
+  const [upload, setUpload] = useState(false);
 
   const handleDivClick = () => {
     fileInputRef.current!.click();
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpload(true);
     if (e.target.files!.length > 0) {
       const files = e.target.files;
       const formData = new FormData();
@@ -91,6 +94,7 @@ const Page = (props: Props) => {
     } else {
       console.log("No file uploaded");
     }
+    setUpload(false);
   };
 
   const queryHandler = async () => {
@@ -240,7 +244,7 @@ const Page = (props: Props) => {
             <div className="flex gap-2 justify-center items-center w-full">
               <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger><CgFileAdd className="cursor-pointer text-gray-300 hover:scale-110 hover:text-white transition ease-in-out duration-300" onClick={handleDivClick}/></TooltipTrigger>
+                    <TooltipTrigger>{upload == true ? <Loader2 className="animate-spin"/> :<CgFileAdd className="cursor-pointer text-gray-300 hover:scale-110 hover:text-white transition ease-in-out duration-300" onClick={handleDivClick}/>}</TooltipTrigger>
                     <TooltipContent>
                       <p className="p-1">Upload PDFs Here</p>
                     </TooltipContent>

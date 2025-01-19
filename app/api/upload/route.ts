@@ -2,6 +2,7 @@ import pdf from "pdf-parse";
 import { NextResponse } from "next/server";
 import { Pinecone } from '@pinecone-database/pinecone';
 import { HfInference } from '@huggingface/inference';
+import cloudinary from "@/lib/cloudinary";
 
 const hf = new HfInference(process.env.HF_TOKEN);
 
@@ -29,6 +30,21 @@ export async function POST(req: Request){
     if(file instanceof File){
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
+
+      const uploadResult: any = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: "raw" },
+          (error, result) => {
+            if (error) return reject(error);
+            resolve(result);
+          }
+        );
+        uploadStream.end(buffer);
+      });
+
+      // File URL from Cloudinary
+      const fileUrl = uploadResult.secure_url;
+      console.log("File uploaded successfully:", fileUrl);
 
       const pdfData = await pdf(buffer);
 

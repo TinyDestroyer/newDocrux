@@ -125,7 +125,7 @@ const Docs = (props: Props) => {
     };
 
     fetchData();
-  }, []);
+  }, [user?.id]);
 
   return (
     <div className="flex flex-col items-center w-screen">
@@ -224,8 +224,8 @@ const Docs = (props: Props) => {
               <TableCell>10</TableCell>
               <TableCell className="text-right"><Button className="text-red-600"><Trash2/></Button></TableCell>
             </TableRow> */}
-            {documents.map(doc => (
-              <TableRow>
+            {documents.map((doc, index) => (
+              <TableRow key={index}>
                 <TableCell className="font-medium cursor-pointer">{doc.title!}</TableCell>
                 <TableCell><Button className="bg-green-600 hover:bg-green-600">Documents</Button></TableCell>
                 <TableCell>1</TableCell>

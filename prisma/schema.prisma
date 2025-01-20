@@ -35,7 +35,7 @@ model Conversation {
   userId    String
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   messages  Message[]
-  files     File[] // Added this field
+  files     File[]
 
   @@index([userId])
 }

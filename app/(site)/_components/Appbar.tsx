@@ -38,8 +38,8 @@ function DesktopNavbar() {
 }
 
 const items = [
-  { label: "Dashboard", link: "/dashboard" },
-  { label: "Products", link: "/products" },
+  { label: "Conversation", link: "/dashboard" },
+  { label: "Documents", link: "/products" },
   { label: "GetPlus+", link: "/getplus" },
 ];
 

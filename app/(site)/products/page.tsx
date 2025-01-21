@@ -248,8 +248,8 @@ const Docs = (props: Props) => {
                           </DialogDescription>
                         </DialogHeader>
                         <div className="grid grid-cols-5">
-                          {doc.files.map(file => (
-                            <div className="flex flex-col justify-center items-center">
+                          {doc.files.map((file,index) => (
+                            <div className="flex flex-col justify-center items-center" key={index}>
                               <FileText className="h-8 w-8 text-green-500" />
                               <div className="text-xs">{file.name}</div>
                             </div>

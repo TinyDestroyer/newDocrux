@@ -19,3 +19,21 @@ export const getConversations = async (userId: string) => {
     return null;
   }
 };
+
+export const getSingleConversation = async (conversationId: string) => {
+  try {
+    const conversations = await db.conversation.findUnique({
+        where: {
+            id:conversationId
+        },
+        include: {
+            files: true,
+            messages: true,
+        }
+    });
+
+    return conversations;
+  } catch {
+    return null;
+  }
+};

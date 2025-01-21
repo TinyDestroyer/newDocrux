@@ -38,7 +38,7 @@ function DesktopNavbar() {
 }
 
 const items = [
-  { label: "Conversation", link: "/dashboard" },
+  { label: "Conversation", link: "/conversations" },
   { label: "Documents", link: "/products" },
   { label: "GetPlus+", link: "/getplus" },
 ];

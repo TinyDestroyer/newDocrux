@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
-import { X,Ghost, Trash2, Upload } from "lucide-react";
+import { X,Ghost, Trash2, Upload,FileText } from "lucide-react";
 import { PlusCircle } from 'lucide-react';
 import {
   Dialog,
@@ -25,16 +25,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createWorker } from 'tesseract.js';
 import { Conversation } from "@prisma/client";
+import Link from "next/link";
 
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type Props = {};
+
+type ConversationWithFiles = Conversation & {
+  files: File[]
+}
 
 const Docs = (props: Props) => {
   const user = useCurrentUser();
@@ -44,7 +50,7 @@ const Docs = (props: Props) => {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
-  const [documents, setDocuments] = useState<Conversation[] | null>([]);
+  const [documents, setDocuments] = useState<ConversationWithFiles[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
@@ -116,7 +122,7 @@ const Docs = (props: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/data?userid=${user?.id}`);
+        const response = await fetch(`/api/conversations/data?userid=${user?.id}`);
         const result = await response.json();
         setDocuments(result);
       } catch (error) {
@@ -125,7 +131,7 @@ const Docs = (props: Props) => {
     };
 
     fetchData();
-  }, [user?.id]);
+  }, [documents]);
 
   return (
     <div className="flex flex-col items-center w-screen">
@@ -211,9 +217,10 @@ const Docs = (props: Props) => {
           <TableCaption>A list of your recent Conversations</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead className="text-center">S. No.</TableHead>
               <TableHead className="text-center">Conversation name</TableHead>
-              <TableHead className="text-center">Documents</TableHead>
               <TableHead className="text-center">No. of Documents</TableHead>
+              <TableHead className="text-center">Documents</TableHead>
               <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>
@@ -226,16 +233,38 @@ const Docs = (props: Props) => {
             </TableRow> */}
             {documents.map((doc, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium cursor-pointer">{doc.title!}</TableCell>
-                <TableCell><Button className="bg-green-600 hover:bg-green-600">Documents</Button></TableCell>
-                <TableCell>1</TableCell>
+                <TableCell className="font-medium cursor-pointer">{index + 1}</TableCell>
+                <TableCell className="font-medium cursor-pointer"><Link href={`/conversations/${doc.id}`}>{doc.title!}</Link></TableCell>
+                <TableCell>{doc.files.length}</TableCell>
+                <TableCell>
+                  <Button className="bg-green-600 hover:bg-green-600">
+                    <Dialog>
+                      <DialogTrigger>Documents</DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Documents</DialogTitle>
+                          <DialogDescription>
+                            Your Documents are shown here
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid grid-cols-5">
+                          {doc.files.map(file => (
+                            <div className="flex flex-col justify-center items-center">
+                              <FileText className="h-8 w-8 text-green-500" />
+                              <div className="text-xs">{file.name}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </DialogContent>
+                  </Dialog>
+                  </Button>
+                </TableCell>
                 <TableCell className="text-right"><Button className="text-red-600"><Trash2/></Button></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table> 
       }
-
     </div>
   );
 };

@@ -36,6 +36,18 @@ import Link from "next/link";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type Props = {};
+type ConversationWithFiles = Conversation & {
+  files: FileType[];
+};
+type FileType = {
+  id: string;
+  createdAt: Date;
+  name: string;
+  url: string; // Explicitly define the url field
+  size: number;
+  type: string;
+  conversationId: string;
+};
 
 const Docs = (props: Props) => {
   const user = useCurrentUser();

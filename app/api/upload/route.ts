@@ -16,6 +16,7 @@ export async function POST(req: Request){
   const formData = await req.formData();
   const user = formData.get("user");
   const files = formData.getAll("files");
+  const conversationId = formData.get("conversationId");
 
   if (!user || typeof user!== "string") {
     return new Response(JSON.stringify({ error: "No username provided" }), {
@@ -49,7 +50,8 @@ export async function POST(req: Request){
           values: embeddings[i],
           metadata:{
             text: sentences[i],
-            user
+            user,
+            conversationId
           }
         };
         data.push(newData);

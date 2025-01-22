@@ -25,11 +25,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createWorker } from "tesseract.js";
 import { Conversation } from "@prisma/client";
+import Link from "next/link";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -44,7 +46,7 @@ const Docs = (props: Props) => {
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setNumPages(numPages);
   }
-  const [documents, setDocuments] = useState<Conversation[] | null>([]);
+  const [documents, setDocuments] = useState<ConversationWithFiles[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
@@ -125,7 +127,7 @@ const Docs = (props: Props) => {
     };
 
     fetchData();
-  }, [user?.id]);
+  }, [documents]);
 
   return (
     <div className="flex flex-col items-center">
@@ -220,9 +222,10 @@ const Docs = (props: Props) => {
           <TableCaption>A list of your recent Conversations</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead className="text-center">S. No.</TableHead>
               <TableHead className="text-center">Conversation name</TableHead>
-              <TableHead className="text-center">Documents</TableHead>
               <TableHead className="text-center">No. of Documents</TableHead>
+              <TableHead className="text-center">Documents</TableHead>
               <TableHead className="text-right">Delete</TableHead>
             </TableRow>
           </TableHeader>

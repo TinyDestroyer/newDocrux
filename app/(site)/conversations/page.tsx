@@ -20,6 +20,7 @@ import { Loader2 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Props = {};
+
 interface Chat {
   name: string;
   chat: string;

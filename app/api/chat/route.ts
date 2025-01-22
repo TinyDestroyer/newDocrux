@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { Pinecone } from '@pinecone-database/pinecone';
 import { HfInference } from '@huggingface/inference';
 import Groq from "groq-sdk";
+import { db } from "@/lib/db";
 
 const hf = new HfInference(process.env.HF_TOKEN);
 
@@ -16,6 +17,7 @@ export async function GET(req : Request){
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("query") || "";
     const user = searchParams.get("user");
+    const conversationId = searchParams.get("conversationId") || "";
 
     const embed_query= await hf.featureExtraction({
         model: 'sentence-transformers/all-MiniLM-L6-v2',
@@ -38,12 +40,22 @@ export async function GET(req : Request){
         queryEmbedding = [embed_query as number];
     }
 
+    await db.message.create({
+        data: {
+          content : query,
+          role : "user",
+          conversation: {
+            connect: { id: conversationId }, // Associate with the conversation
+          },
+        },
+    });
+
     const response = await index.query({
         topK: 2,
         vector: queryEmbedding,
         includeValues: true,
         includeMetadata: true,
-        filter: { user }
+        filter: { user,conversationId }
     });
 
     let text = "";
@@ -61,6 +73,16 @@ export async function GET(req : Request){
         ],
         model: "llama-3.3-70b-versatile",
         // max_tokens: 300,
+    });
+
+    await db.message.create({
+        data: {
+          content : data.choices[0].message.content || "",
+          role : "system",
+          conversation: {
+            connect: { id: conversationId }, // Associate with the conversation
+          },
+        },
     });
     return NextResponse.json(data.choices[0].message.content);
 }

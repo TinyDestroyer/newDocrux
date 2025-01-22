@@ -63,6 +63,7 @@ export async function POST(req: Request) {
                 files: true
             }
         })
+        formData.append("conversationId", conversation.id);
         const response = await fetch("http://localhost:3000/api/upload", {
             method: "POST",
             body: formData,

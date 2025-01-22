@@ -238,7 +238,7 @@ const Page = (props: Props) => {
       behavior: 'smooth', // Smooth scrolling
       block: 'end', // Align the div to the bottom of the viewport
     });
-  }, [chats]);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4 text-2xl text-white flex-grow justify-between m-2 mb-2 min-h-full">

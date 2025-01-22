@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { UserButton } from "@/components/auth/user-button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 type Props = {};
 
@@ -23,15 +24,14 @@ const Navbar = (props: Props) => {
 
 function DesktopNavbar() {
   return (
-    <div className="hidden border-separate border-b bg-background md:block">
-      <nav className="container flex items-center justify-between px-8 h-[80px] min-h-[60px]">
-        <Logo />
+    <div className="hidden bg-slate-800 md:block">
+      <nav className="flex items-center justify-end px-8 h-fit border-0">
+        <SidebarTrigger className="text-white" />
         <div className="flex h-full">
           {items.map((item) => (
             <NavbarItem key={item.label} link={item.link} label={item.label} />
           ))}
         </div>
-        <UserButton />
       </nav>
     </div>
   );
@@ -47,11 +47,15 @@ function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="block border-separate bg-background md:hidden">
+    <div className="block bg-background md:hidden">
       <nav className="container flex items-center justify-between px-8">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
-            <Button variant={"ghost"} size={"icon"}>
+            <Button
+              variant={"ghost"}
+              size={"icon"}
+              className="hover:bg-transparent"
+            >
               <Menu />
             </Button>
           </SheetTrigger>
@@ -95,7 +99,7 @@ function NavbarItem({
         href={link}
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "w-full justify-start text-lg text-muted-foreground hover:text-foreground",
+          "w-full justify-start text-lg text-muted-foreground hover:text-foreground hover:bg-transparent hover:text-red-600",
           isActive && "text-red-600"
         )}
         onClick={() => {

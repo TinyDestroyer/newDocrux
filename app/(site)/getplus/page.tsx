@@ -1,11 +1,11 @@
-"use client"
+"use client";
 import Link from "next/link";
 import React from "react";
 
 const page = () => {
   return (
-    <div className="w-screen flex justify-center items-center font-bold text-xl text-white gap-5">
-      <div className="h-4/5 w-1/5 flex flex-col items-center text-black bg-white rounded-lg p-5 hover:border hover:border-2 hover:border-blue-500 hover:scale-110 transition ease-in-out duration-500 cursor-pointer">
+    <div className="flex justify-center items-center font-bold text-xl text-white gap-5">
+      <div className="h-4/5 w-1/5 flex flex-col items-center text-black bg-white rounded-lg p-5 hover:border hover:border-blue-500 hover:scale-110 transition ease-in-out duration-500 cursor-pointer">
         <h3 className="text-2xl font-semibold mb-4 bg-red-500 w-full rounded-lg text-white text-center p-2 tracking-widest">
           Starter
         </h3>

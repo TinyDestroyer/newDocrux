@@ -1,4 +1,6 @@
 import Appbar from "@/app/(site)/_components/Appbar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ThemeProvider } from "next-themes";
 
 interface ProtectedLayoutProps {
@@ -7,9 +9,19 @@ interface ProtectedLayoutProps {
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   return (
-    <div className="max-h-screen min-h-screen w-full bg-[#141414] flex flex-col">
+    <div className="h-screen w-full bg-slate-950 flex flex-col">
+      {/* Appbar */}
       <Appbar />
-      <div className="flex flex-grow overflow-y-auto h-full w-full">{children}</div>
+
+      <div className="flex flex-grow overflow-hidden">
+        {/* Sidebar */}
+        <AppSidebar />
+
+        {/* Main content */}
+        <main className="flex-grow overflow-y-auto min-h-screen">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };

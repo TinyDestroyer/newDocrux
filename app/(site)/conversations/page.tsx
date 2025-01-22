@@ -21,6 +21,7 @@ import { Loader2 } from "lucide-react";
 
 
 type Props = {};
+
 interface Chat {
   name: string;
   chat: string;

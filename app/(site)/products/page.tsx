@@ -38,8 +38,18 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 type Props = {};
 
+type FileType = {
+  id: string;
+  createdAt: Date;
+  name: string;
+  url: string; // Explicitly define the `url` field
+  size: number;
+  type: string;
+  conversationId: string;
+};
+
 type ConversationWithFiles = Conversation & {
-  files: File[]
+  files: FileType[]
 }
 
 const Docs = (props: Props) => {
@@ -250,8 +260,10 @@ const Docs = (props: Props) => {
                         <div className="grid grid-cols-5">
                           {doc.files.map((file,index) => (
                             <div className="flex flex-col justify-center items-center" key={index}>
-                              <FileText className="h-8 w-8 text-green-500" />
-                              <div className="text-xs">{file.name}</div>
+                                <a href={file.url} target="_blank" rel="noopener noreferrer">
+                                  <FileText className="h-8 w-8 text-green-500" />
+                                  <div className="text-xs">{file.name}</div>
+                                </a>
                             </div>
                           ))}
                         </div>

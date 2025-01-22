@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
 import React from "react";
 import { useState, useEffect } from "react";
-import { Document, Page } from 'react-pdf';
+import { Document, Page } from "react-pdf";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { pdfjs } from 'react-pdf';
-import 'react-pdf/dist/Page/AnnotationLayer.css';
-import 'react-pdf/dist/Page/TextLayer.css';
+import { pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
 import {
   Table,
   TableBody,
@@ -15,10 +15,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { X,Ghost, Trash2, Upload,FileText } from "lucide-react";
-import { PlusCircle } from 'lucide-react';
+import { X, Ghost, Trash2, Upload } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -29,32 +29,30 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createWorker } from 'tesseract.js';
+import { createWorker } from "tesseract.js";
 import { Conversation } from "@prisma/client";
 import Link from "next/link";
-
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 type Props = {};
-
+type ConversationWithFiles = Conversation & {
+  files: FileType[];
+};
 type FileType = {
   id: string;
   createdAt: Date;
   name: string;
-  url: string; // Explicitly define the `url` field
+  url: string; // Explicitly define the url field
   size: number;
   type: string;
   conversationId: string;
 };
 
-type ConversationWithFiles = Conversation & {
-  files: FileType[]
-}
-
 const Docs = (props: Props) => {
   const user = useCurrentUser();
-  const cloudinaryUrl = "https://res.cloudinary.com/docrux/raw/upload/v1737292407/vnyexwbfnotxxfzdkm40";
+  const cloudinaryUrl =
+    "https://res.cloudinary.com/docrux/raw/upload/v1737292407/vnyexwbfnotxxfzdkm40";
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
@@ -62,7 +60,7 @@ const Docs = (props: Props) => {
   }
   const [documents, setDocuments] = useState<ConversationWithFiles[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -72,58 +70,58 @@ const Docs = (props: Props) => {
 
     try {
       const formData = new FormData();
-      formData.append('title', title);
-      files.forEach(file => {
-        formData.append('files', file);
+      formData.append("title", title);
+      files.forEach((file) => {
+        formData.append("files", file);
       });
-      const username = user?.name || "guest"
+      const username = user?.name || "guest";
       formData.append("user", username);
 
       const response = await fetch(`/api/conversations?userid=${user?.id}`, {
-        method: 'POST',
-        body: formData
+        method: "POST",
+        body: formData,
       });
 
-      if (!response.ok) throw new Error('Upload failed');
+      if (!response.ok) throw new Error("Upload failed");
 
-      let result
-      if(response.ok){
+      let result;
+      if (response.ok) {
         result = await response.json();
       }
       const imgs = result.images;
 
       const worker = await createWorker();
-      let imgText = []
-      if(imgs){
-        for(let i = 0; i < imgs.length; i++){
+      let imgText = [];
+      if (imgs) {
+        for (let i = 0; i < imgs.length; i++) {
           // Decode Base64 to binary
           const binaryString = atob(imgs[i].data);
           const binaryLength = binaryString.length;
           const binaryArray = new Uint8Array(binaryLength);
-  
+
           for (let i = 0; i < binaryLength; i++) {
             binaryArray[i] = binaryString.charCodeAt(i);
           }
           // Create a Blob
-          const blob = new Blob([binaryArray], { type: 'image/png' }); 
+          const blob = new Blob([binaryArray], { type: "image/png" });
           const ret = await worker.recognize(blob);
-          imgText.push(ret.data.text)
+          imgText.push(ret.data.text);
         }
       }
 
       formData.append("imgText", JSON.stringify(imgText));
       await fetch("/api/imageUpload", {
-        method : "POST",
+        method: "POST",
         body: formData,
-      })
+      });
       await worker.terminate();
 
       // Reset form and close modal on success
-      setTitle('');
+      setTitle("");
       setFiles([]);
       setOpen(false);
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
     } finally {
       setLoading(false);
     }
@@ -132,7 +130,7 @@ const Docs = (props: Props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/conversations/data?userid=${user?.id}`);
+        const response = await fetch(`/api/data?userid=${user?.id}`);
         const result = await response.json();
         setDocuments(result);
       } catch (error) {
@@ -144,7 +142,7 @@ const Docs = (props: Props) => {
   }, [documents]);
 
   return (
-    <div className="flex flex-col items-center w-screen">
+    <div className="flex flex-col items-center">
       <div className="flex text-3xl font-semibold text-primary-foreground py-10 w-3/4">
         Your Conversations :
         {/* <Button className="ml-auto bg-green-600"><Upload className="mr-2 h-4 w-4" />New Conversation</Button> */}
@@ -186,13 +184,18 @@ const Docs = (props: Props) => {
                 {files.length > 0 && (
                   <div className="mt-2 space-y-2">
                     {files.map((file, index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm"
+                      >
                         <span className="flex-1 truncate">{file.name}</span>
                         <Button
                           type="button"
                           variant="ghost"
                           size="sm"
-                          onClick={() => setFiles(files.filter((_, i) => i !== index))}
+                          onClick={() =>
+                            setFiles(files.filter((_, i) => i !== index))
+                          }
                           className="h-6 w-6 p-0"
                         >
                           <X className="h-4 w-4" />
@@ -203,11 +206,15 @@ const Docs = (props: Props) => {
                 )}
               </div>
               <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={loading}>
-                  {loading ? 'Uploading...' : 'Create'}
+                  {loading ? "Uploading..." : "Create"}
                 </Button>
               </div>
             </form>
@@ -220,9 +227,9 @@ const Docs = (props: Props) => {
       <p className="text-white">
         Page {pageNumber} of {numPages}
       </p> */}
-      {documents == null ? 
-        <div className="text-lg text-white">No Conversations</div> 
-        :
+      {documents == null ? (
+        <div className="text-lg text-white">No Conversations</div>
+      ) : (
         <Table className="text-white text-center w-5/6 mx-auto">
           <TableCaption>A list of your recent Conversations</TableCaption>
           <TableHeader>
@@ -243,40 +250,25 @@ const Docs = (props: Props) => {
             </TableRow> */}
             {documents.map((doc, index) => (
               <TableRow key={index}>
-                <TableCell className="font-medium cursor-pointer">{index + 1}</TableCell>
-                <TableCell className="font-medium cursor-pointer"><Link href={`/conversations/${doc.id}`}>{doc.title!}</Link></TableCell>
-                <TableCell>{doc.files.length}</TableCell>
+                <TableCell className="font-medium cursor-pointer">
+                  {doc.title!}
+                </TableCell>
                 <TableCell>
                   <Button className="bg-green-600 hover:bg-green-600">
-                    <Dialog>
-                      <DialogTrigger>Documents</DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Documents</DialogTitle>
-                          <DialogDescription>
-                            Your Documents are shown here
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="grid grid-cols-5">
-                          {doc.files.map((file,index) => (
-                            <div className="flex flex-col justify-center items-center" key={index}>
-                                <a href={file.url} target="_blank" rel="noopener noreferrer">
-                                  <FileText className="h-8 w-8 text-green-500" />
-                                  <div className="text-xs">{file.name}</div>
-                                </a>
-                            </div>
-                          ))}
-                        </div>
-                      </DialogContent>
-                  </Dialog>
+                    Documents
                   </Button>
                 </TableCell>
-                <TableCell className="text-right"><Button className="text-red-600"><Trash2/></Button></TableCell>
+                <TableCell>1</TableCell>
+                <TableCell className="text-right">
+                  <Button className="text-red-600">
+                    <Trash2 />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
-        </Table> 
-      }
+        </Table>
+      )}
     </div>
   );
 };

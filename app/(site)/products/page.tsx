@@ -32,7 +32,7 @@ import { Label } from "@/components/ui/label";
 import { createWorker } from 'tesseract.js';
 import { Conversation } from "@prisma/client";
 import Link from "next/link";
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -256,14 +256,33 @@ const Docs = (props: Props) => {
                           <DialogDescription>
                             Your Documents are shown here
                           </DialogDescription>
+                          <ScrollArea className="rounded-md border p-4">
+                            <Document file={cloudinaryUrl} onLoadSuccess={onDocumentLoadSuccess} className="text-white w-full">
+                              <Page pageNumber={pageNumber} />
+                            </Document>
+                            <p className="text-white">
+                              Page {pageNumber} of {numPages}
+                            </p>
+                          </ScrollArea>
                         </DialogHeader>
                         <div className="grid grid-cols-5">
                           {doc.files.map((file,index) => (
                             <div className="flex flex-col justify-center items-center" key={index}>
-                                <a href={file.url} target="_blank" rel="noopener noreferrer">
-                                  <FileText className="h-8 w-8 text-green-500" />
-                                  <div className="text-xs">{file.name}</div>
-                                </a>
+                                <Dialog>
+                                  <DialogTrigger>
+                                    <FileText className="h-8 w-8 text-green-500" />
+                                    <div className="text-xs">{file.name}</div>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogHeader>
+                                      <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                      <DialogDescription>
+                                        This action cannot be undone. This will permanently delete your account
+                                        and remove your data from our servers.
+                                      </DialogDescription>
+                                    </DialogHeader>
+                                  </DialogContent>
+                                </Dialog>
                             </div>
                           ))}
                         </div>
